@@ -7,13 +7,11 @@ export const useOrder = () => {
 
     const addItem = (item: ItemMenu) => {
 
-        const itemExist = order.find(orderItem => orderItem.id === item.id)
-        if (itemExist) {
+        const itemExist = order.findIndex(orderItem => orderItem.id === item.id)
+        if (itemExist >= 0) {
 
-            const updatedOrder = order.map((item: OrderItem) => item.id === item.id ? {
-                ...item,
-                quantity: item.quantity + 1
-            } : item)
+            const updatedOrder = [...order]
+            updatedOrder[itemExist].quantity++
             setOrder(updatedOrder)
 
 
