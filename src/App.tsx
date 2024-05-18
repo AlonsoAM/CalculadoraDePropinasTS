@@ -7,7 +7,7 @@ import {OrderContents} from "./components/OrderContents.tsx";
 const App = () => {
 
     const [data] = useState(menuItems)
-    const {addItem, order} = useOrder()
+    const {addItem, order, removeItem} = useOrder()
 
     return (
         <>
@@ -25,7 +25,7 @@ const App = () => {
                     </div>
                 </div>
                 <div className={'border border-dashed border-slate-300 p-5 rounded-lg space-y-10'}>
-                   <OrderContents order={order}/>
+                   <OrderContents order={order} removeItem={removeItem}/>
                 </div>
             </main>
         </>
