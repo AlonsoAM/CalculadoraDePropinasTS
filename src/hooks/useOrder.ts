@@ -22,12 +22,11 @@ export const useOrder = () => {
             setOrder([...order, newItem])
         }
 
-
     }
 
 
     return {
-
+        order,
         addItem
 
     }
