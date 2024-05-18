@@ -1,35 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {useState} from "react";
+import {menuItems} from "./data/db.ts";
+import {MenuItem} from "./components/MenuItem.tsx";
+import {useOrder} from "./hooks/useOrder.ts";
+import {OrderContents} from "./components/OrderContents.tsx";
+import {OrderTotals} from "./components/OrderTotals.tsx";
+import {TipPercentageForm} from "./components/TipPercentageForm.tsx";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    const [data] = useState(menuItems)
+    const {addItem, order, removeItem, tip, setTip, placeOrder} = useOrder()
+
+    return (
+        <>
+            <header className="bg-teal-400 py-5">
+                <h1 className="text-center text-4xl font-black">Calculadora de Propinas y Consumo</h1>
+            </header>
+
+            <main className="max-w-7xl mx-auto py-20 grid md:grid-cols-2">
+                <div className={'p-5'}>
+                    <h2 className={'text-4xl font-black'}>Menú</h2>
+                    <div className={'space-y-3 mt-10'}>
+                        {data.map((item) => (
+                            <MenuItem key={item.id} item={item} addItem={addItem}/>
+                        ))}
+                    </div>
+                </div>
+                <div className={'border border-dashed border-slate-300 p-5 rounded-lg space-y-10'}>
+                    {order.length > 0 ? (
+                        <>
+                            <OrderContents order={order} removeItem={removeItem}/>
+                            <TipPercentageForm setTip={setTip} tip={tip}/>
+                            <OrderTotals order={order} tip={tip} placeOrder={placeOrder}/>
+                        </>
+                    ) : <p className={'text-center'}>
+                        La orden está vacía
+                    </p>}
+
+                </div>
+            </main>
+        </>
+    );
+};
 
 export default App
